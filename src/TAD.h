@@ -6,10 +6,22 @@
 enum Clase {V_REG,V_NREG,V_PRIV};
 enum Clasificacion {V_CAB,V_INT};
 
+typedef struct AeropuertoCDT* AeropuertoADT;
+AeropuertoADT newAeropuerto();//crea un nuevo aeropuerto
+void setOaciAeropuerto(AeropuertoADT aeropuerto, const char *oaci);//setea el oaci
+void setDenominacionAeropuerto(AeropuertoADT aeropuerto, char *denominacion);//setea la denominacion del aeropuerto(no crea un nuevo string)
+char *getOaciAeropuerto(AeropuertoADT aeropuerto);//devuelve el oaci del aeropuerto
+char *getDenominacionAeropuerto(AeropuertoADT aeropuerto);//devuelve la denominacion del aeropuerto
+void freeAeropuerto(AeropuertoADT aeropuerto);
+
+
+
+
 typedef struct AeroListaCDT *AeroListaADT;
 AeroListaADT newAeroLista();//crea un aerolista vacia
-void addAeropuerto(AeroListaADT aerolista,const char oaci[], const char* denominacion);
-char * getDenominacion(AeroListaADT aerolista,const char* oaci);//devuelve la denominacion o NULL
+//agrega un aeropuerto a la aerolista(aeropuerto es liberado y ya no es utilizable)
+void addAeropuerto(AeroListaADT aerolista,AeropuertoADT aeropuerto);
+char *getDenominacionAerolista(AeroListaADT aerolista,const char* oaci);//devuelve la denominacion o NULL
 void freeAeroLista(AeroListaADT aerolista);//libera una aerolista
 
 
