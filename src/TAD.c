@@ -85,7 +85,7 @@ void addAeropuerto(AeroListaADT aerolista,const char oaci[], const char* denomin
     }
 }
 
-char * getDenominacion(AeroListaADT aerolista, char* oaci){
+char * getDenominacion(AeroListaADT aerolista, const char* oaci){
     NodeADT aux=aerolista->first;
     int c=0;
     while(aux!=NULL && c!=1){
@@ -110,4 +110,46 @@ void freeAeroLista(AeroListaADT aerolista){
 
 //------------------------------------------------------------------
 //VUELOS
+struct VueloCDT{
+    char oaciObj[LONG_OACI];
+    FechaT fecha;
+    int clase;
+    int clasificacion;
+};
+VueloADT newVuelo(){
+    return malloc(sizeof(struct VueloCDT));
+}
+
+//setea el oaciobj(oaci de origen si es un despegue u oaci de destino si es un aterrizaje )
+void setOaciObjVuelo(VueloADT vuelo,const char* oaci){
+    oaciCopy(vuelo->oaciObj,oaci);
+}
+void setFechaVuelo(VueloADT vuelo,FechaT fecha){
+    vuelo->fecha.dia=fecha.dia;
+    vuelo->fecha.mes=fecha.mes;
+    vuelo->fecha.anio=fecha.anio;
+}
+void setClaseVuelo(VueloADT vuelo,enum Clase clase){
+    vuelo->clase=clase;
+}
+void setClasificacionVuelo(VueloADT vuelo, enum Clasificacion clasificacion){
+    vuelo->clasificacion=clasificacion;
+}
+
+char* getOaciObjVuelo(VueloADT vuelo){
+    return vuelo->oaciObj;
+}
+FechaT getFechaVuelo(VueloADT vuelo){
+    return vuelo->fecha;
+}
+int getClaseVuelo(VueloADT vuelo){
+    return vuelo->clase;
+}
+int getClasificacionVuelo(VueloADT vuelo){
+    return vuelo->clasificacion;
+}
+
+void freeVuelo(VueloADT vuelo){
+    free(vuelo);
+}
 

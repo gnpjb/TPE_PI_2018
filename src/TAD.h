@@ -3,13 +3,13 @@
 
 #define LONG_OACI 4
 
-enum {V_REG,V_NREG,V_PRIV};
-enum {V_CAB,V_INT};
+enum Clase {V_REG,V_NREG,V_PRIV};
+enum Clasificacion {V_CAB,V_INT};
 
 typedef struct AeroListaCDT *AeroListaADT;
 AeroListaADT newAeroLista();//crea un aerolista vacia
 void addAeropuerto(AeroListaADT aerolista,const char oaci[], const char* denominacion);
-char * getDenominacion(AeroListaADT aerolista, char* oaci);//devuelve la denominacion o NULL
+char * getDenominacion(AeroListaADT aerolista,const char* oaci);//devuelve la denominacion o NULL
 void freeAeroLista(AeroListaADT aerolista);//libera una aerolista
 
 
@@ -27,15 +27,15 @@ typedef struct FechaDataType{
 VueloADT newVuelo();// crea un vuelo
 
 //setea el oaciobj(oaci de origen si es un despegue u oaci de destino si es un aterrizaje )
-void setOaciObjVuelo(VueloADT vuelo, char* oaci);
+void setOaciObjVuelo(VueloADT vuelo,const char* oaci);
 void setFechaVuelo(VueloADT vuelo,FechaT fecha);//setea la fecha
-void setClaseVuelo(VueloADT vuelo,int clase);
-void setClasificacionVuelo(VueloADT vuelo,int clasificacion);
+void setClaseVuelo(VueloADT vuelo,enum Clase clase);
+void setClasificacionVuelo(VueloADT vuelo,enum Clasificacion clasificacion);
 
-void getOaciObjVuelo(VueloADT vuelo);
-void getFechaVuelo(VueloADT vuelo);
-void getClaseVuelo(VueloADT vuelo);
-void getClasificacionVuelo(VueloADT vuelo);
+char* getOaciObjVuelo(VueloADT vuelo);
+FechaT getFechaVuelo(VueloADT vuelo);
+int getClaseVuelo(VueloADT vuelo);
+int getClasificacionVuelo(VueloADT vuelo);
 
 void freeVuelo(VueloADT vuelo);//libera un vuelo
 
