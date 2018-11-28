@@ -3,10 +3,21 @@
 
 #define LONG_OACI 4
 
-enum Clase {V_REG,V_NREG,V_PRIV};
-enum Clasificacion {V_CAB,V_INT};
+#define ENUM_CLASE_AMOUNT 3
+#define ENUM_CLASIFICACION_AMOUNT 3
+enum Clase {V_REG=0,V_NREG,V_PRIV};
+enum Clasificacion {V_CAB=0,V_INT,V_NA};
+
+//devuelve -1 si oaci1<oaci2
+//0 si oaci1==oaci2
+//1 si oaci1>oaci2
+int oaciCompare(const char oaci1[],const char oaci2[]);
+char *cloneDenominacion(const char* denominacion);
+void oaciCopy(char oaciDest[],const char oaciSrc[]);
+
 
 typedef struct AeropuertoCDT* AeropuertoADT;
+
 AeropuertoADT newAeropuerto();//crea un nuevo aeropuerto
 void setOaciAeropuerto(AeropuertoADT aeropuerto, const char *oaci);//setea el oaci
 void setDenominacionAeropuerto(AeropuertoADT aeropuerto, char *denominacion);//setea la denominacion del aeropuerto(no crea un nuevo string)
