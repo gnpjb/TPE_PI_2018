@@ -13,7 +13,7 @@ struct FirstQueryCDT{
 
 FirstQuery newFirstQuery(AeroListaADT aerolistaAsociada){
     FirstQuery query=malloc(sizeof(*query));
-    query->size=getSizeAerolista(aerolistaAsociada)
+    query->size=getSizeAerolista(aerolistaAsociada);
     query->arr=malloc(sizeof(Node)*query->size);
     int i=0;
     initIteratorAerolista(aerolistaAsociada);
