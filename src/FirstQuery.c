@@ -42,7 +42,7 @@ void queryFirstQuery(FirstQuery query,VueloADT vuelo){
 void swapNode(Node* node1,Node* node2){
     Node temp=*node1;
     *node1=*node2;
-    *node2=*temp;
+    *node2=temp;
 }
 //FUNCION AUXILIAR
 
