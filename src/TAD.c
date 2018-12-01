@@ -139,7 +139,9 @@ void initIteratorAerolista(AeroListaADT aeroLista){
 }
 
 AeropuertoADT getNextAerolista(AeroListaADT aeroLista){
-    return aeroLista->it->aeropuerto;
+    AeropuertoADT ret=aeroLista->it->aeropuerto;
+    aeroLista->it=aeroLista->it->next;
+    return ret;
 }
 
 int hasNextAerolista(AeroListaADT aeroLista){
