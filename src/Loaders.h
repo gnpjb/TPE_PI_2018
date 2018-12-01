@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include "TAD.h"
 
+
+//se salte una linea
+void skipLine(FILE* file);
 //carga el vuelo que esta en la linea en la que este el archivo al vuelo que se le paso
 //devuelve 1 si se pudo cargar y 0 sino
 int cargarVuelo(FILE* file,VueloADT vuelo);

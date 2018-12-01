@@ -104,11 +104,8 @@ void addAeropuerto(AeroListaADT aerolista,AeropuertoADT aeropuerto){
     }
     else{
         aux=aerolista->first;
-        int c;
-        if(aux->next!=NULL){
-            c=oaciCompare(aux->next->oaci,aeropuerto->oaci);
-        }
-        while(aux->next!=NULL &&  c<0) {
+        int c=-1;
+        while(aux->next!=NULL &&  (c=oaciCompare(aux->oaci,aeropuerto->oaci))<0) {
             aux = aux->next;
         }
         if(c!=0){
@@ -132,6 +129,7 @@ char *getDenominacionAerolista(AeroListaADT aerolista, const char* oaci){
         if(c==0){
             return aux->denominacion;
         }
+        aux=aux->next;
     }
     return NULL;
 }

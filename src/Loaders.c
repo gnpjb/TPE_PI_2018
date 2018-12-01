@@ -6,8 +6,7 @@
 
 //FUNCION AUXILIAR
 
-
-char* getComaSepField(FILE* file, char* field,int* size){
+char* getComaSepField(FILE* file, char* field,size_t * size){
     int c=fgetc(file);
     if(*size==0){
         field=malloc(INIT_BLOCK);
@@ -18,8 +17,8 @@ char* getComaSepField(FILE* file, char* field,int* size){
         int charsRead=1;
         while((c=fgetc(file))!=';'&&c!='\n'&&c!=EOF){
             if((charsRead+1)==*size){
-                field=realloc(field,*size+INIT_BLOCK);
                 *size=*size+INIT_BLOCK;
+                field=realloc(field,*size);
             }
             field[charsRead++]=c;
         }
@@ -89,28 +88,29 @@ int cargarVuelo(FILE* file,VueloADT vuelo){
     if(feof(file)){
         return 0;
     }
-    int size=INIT_BLOCK*2;
+    size_t size=INIT_BLOCK*2;
     char *field=malloc(size);
 
-    getComaSepField(file,field,&size);//obtiene la fecha como string
+    field=getComaSepField(file,field,&size);//obtiene la fecha como string
     setFechaVuelo(vuelo,stringToFecha(field));
 
     skipField(file);//se saltea la hora
 
-    getComaSepField(file, field,&size);//obtiene la clase
+    field=getComaSepField(file, field,&size);//obtiene la clase
     setClaseVuelo(vuelo,stringToClase(field));
 
-    getComaSepField(file, field, &size);//obtiene la clasificacion
+    field=getComaSepField(file, field, &size);//obtiene la clasificacion
     setClasificacionVuelo(vuelo,stringToClasificacion(field));
 
-    getComaSepField(file,field,&size);//obtiene el tipo de mov
+    field=getComaSepField(file,field,&size);//obtiene el tipo de mov
     if(field[0]=='A'){
         //si es un aterrizaje me salteo el de origen y seteo como obj el de destino
         skipField(file);
-        getComaSepField(file,field,&size);
+        field=getComaSepField(file,field,&size);
         setOaciObjVuelo(vuelo,field);
     }else{
         //seteo el de origen como obj
+        field=getComaSepField(file,field,&size);
         setOaciObjVuelo(vuelo,field);
     }
 
@@ -122,5 +122,25 @@ int cargarVuelo(FILE* file,VueloADT vuelo){
 }
 
 void cargarAerolista(FILE*file,AeroListaADT aerolista){
-
+    skipLine(file);
+    size_t size=INIT_BLOCK*4;
+    char *field=malloc(size);
+    AeropuertoADT aeropuerto;
+    while(!feof(file)){
+        skipField(file);
+        field=getComaSepField(file,field,&size);
+        if(field[0]!=0 && field[1]!=0 && field[2]!=0 && field[3]!=0){
+            aeropuerto=newAeropuerto();
+            setOaciAeropuerto(aeropuerto,field);
+            skipField(file);
+            skipField(file);
+            field=getComaSepField(file,field,&size);
+            setDenominacionAeropuerto(aeropuerto,field);
+            addAeropuerto(aerolista,aeropuerto);
+            skipLine(file);
+        }else{
+            skipLine(file);
+        }
+    }
+    free(field);
 }
