@@ -55,6 +55,8 @@ void querySecondQuery(SecondQuery query,VueloADT vuelo){
             case V_INT:
                 query->internacional[diaDeLaSemana] += 1;
                 break;
+            default:
+                break;
         }
         query->comp_mov[clasificacion][clase]+=1;
     }

@@ -45,6 +45,7 @@ struct AeropuertoCDT{
 };
 AeropuertoADT newAeropuerto(){
     AeropuertoADT ret=calloc(1,sizeof(struct AeropuertoCDT));
+    return ret;
 }
 void setOaciAeropuerto(AeropuertoADT aeropuerto, const char *oaci){
     oaciCopy(aeropuerto->oaci,oaci);
