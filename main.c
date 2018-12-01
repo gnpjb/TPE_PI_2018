@@ -9,9 +9,14 @@ int main(int argc,char* argv[]) {
         printf("Incorrecta cantidad de argumentos. Deben ser 2(el archivo de aeropuertos seguido del de movimientos)");
         return 1;
     }
+    const char *aeropuertos_filename=argv[1];
+    const char *vuelos_filename=argv[2];
+    const char query1_filename[]="movimientos_aeropuertos.csv";
+    const char query2_filename[]="dia_semana.csv";
+    const char query3_filename[]="composicion.csv";
 
     //Carga los aeropuertos a memoria
-    FILE* faeropuertos=fopen(argv[1],"rt");
+    FILE* faeropuertos=fopen(aeropuertos_filename,"rt");
     AeroListaADT aeroLista=newAeroLista();
     cargarAerolista(faeropuertos,aeroLista);
     fclose(faeropuertos);
@@ -22,7 +27,7 @@ int main(int argc,char* argv[]) {
 
     //crea un vuelo auxiliar
     VueloADT vuelo=newVuelo();
-    FILE* fvuelos=fopen(argv[2],"rt");
+    FILE* fvuelos=fopen(vuelos_filename,"rt");
 
     //carga los vuelos y los procesa
     while(cargarVuelo(fvuelos,vuelo)){
@@ -37,20 +42,20 @@ int main(int argc,char* argv[]) {
 
 
     //crea el archivo de salida del first query y lo manda a imprimir. luego cierra el archivo y libera firstquery
-    FILE* ffirstquery=fopen("movimientos_aeropuertos.csv","wt");
+    FILE* ffirstquery=fopen(query1_filename,"wt");
     printFirstQuery(firstQuery,ffirstquery);
     fclose(ffirstquery);
     freeFirstQuery(firstQuery);
 
     //libera la aerolista ya que ya no se necesita
     freeAeroLista(aeroLista);
-    
+
     //crea los archivos de salida del secondquery y lo manda a imprimir. luego cierra los archivos y libera secondquery
-    FILE* fsecondquery1=fopen("dia_semana.csv","wt");
-    FILE* fsecondquery2=fopen("composicion.csv","wt");
+    FILE* fsecondquery1=fopen(query2_filename,"wt");
+    FILE* fsecondquery2=fopen(query3_filename,"wt");
     printSecondQuery(secondQuery,fsecondquery1,fsecondquery2);
     fclose(fsecondquery1);
     fclose(fsecondquery2);
     freeSecondQuery(secondQuery);
-    
+
 }
