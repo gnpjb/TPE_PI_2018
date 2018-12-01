@@ -1,18 +1,19 @@
 #include "SecondQuery.h"
 #include <stdlib.h>
 #define LONG_SEMANA 7
-#define PRIMER_DIA "lunes"
-#define SEGUNDO_DIA "martes"
-#define TERCER_DIA "miercoles"
-#define CUARTO_DIA "jueves"
-#define QUINTO_DIA "viernes"
-#define SEXTO_DIA "sabado"
-#define SEPTIMO_DIA "domingo"
+
+//tiene que coincidir con la cantidad de dias de la semana
+const char* const DIAS_DE_LA_SEMANA[] = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+//debe coincidir con ENUM_CLASE_AMOUNT y con el orden de enum Clase
+const char* const CLASES[] = {"Regular", "No Regular","Vuelo Privado"};
+//debe coincidir con ENUM_CLASE_AMOUNT y con el orden de enum Clase
+const char* const CLASIFICACIONES[] = {"Cabotaje","Internacional","Not Available"};
+
 
 struct SecondQueryCDT{
-    int cabotaje[LONG_SEMANA];
-    int internacional[LONG_SEMANA];
-    int comp_mov[ENUM_CLASIFICACION_AMOUNT-1][ENUM_CLASE_AMOUNT];
+    long cabotaje[LONG_SEMANA];
+    long internacional[LONG_SEMANA];
+    long comp_mov[ENUM_CLASIFICACION_AMOUNT-1][ENUM_CLASE_AMOUNT];
 };
 
 SecondQuery newSecondQuery(){
@@ -59,8 +60,18 @@ void querySecondQuery(SecondQuery query,VueloADT vuelo){
     }
 }
 
-void printSecondQuery(SecondQuery query,FILE* file){
-    //TODO
+void printSecondQuery(SecondQuery query,FILE* file1,FILE* file2){
+    fprintf(file1,"Dia;Cabotaje;Internacional;Total");
+    for(int i=0; i<LONG_SEMANA; i++){
+        fprintf(file1,"%s;%ld;%ld;%ld\n",DIAS_DE_LA_SEMANA[i],query->cabotaje[i],query->internacional[i],
+                query->cabotaje[i]+query->internacional[i]);
+    }
+    fprintf(file2,"Clasificacion de vuelo;Clase de vuelo;Movimientos");
+    for(int i=0; i<ENUM_CLASIFICACION_AMOUNT-1; i++){
+        for(int j=0; j<ENUM_CLASE_AMOUNT; j++){
+            fprintf(file2,"%s;%s;%ld",CLASIFICACIONES[i],CLASES[j],query->comp_mov[i][j]);
+        }
+    }
 }
 void freeSecondQuery(SecondQuery query){
     free(query);

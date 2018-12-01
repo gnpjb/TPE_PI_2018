@@ -1,75 +1,74 @@
 #include "FirstQuery.h"
 #include <stdlib.h>
 
-
-typedef struct NodeCDT* Node;
-struct NodeCDT{
-    char oaci[LONG_OACI];
-    char* denominacion;
+typedef struct Node{
+    AeropuertoADT aeropuerto;
     long movs;
-    Node next;
-};
+}Node;
 
 struct FirstQueryCDT{
-    Node first;
-    AeroListaADT aeroLista;
+    Node *arr;
+    int size;
 };
 
 FirstQuery newFirstQuery(AeroListaADT aerolistaAsociada){
-    FirstQuery query = malloc(sizeof(struct FirstQueryCDT));
-    query->first=NULL;
-    query->aeroLista=aerolistaAsociada;
+    FirstQuery query=malloc(sizeof(*query));
+    query->size=getSizeAerolista(aerolistaAsociada)
+    query->arr=malloc(sizeof(Node)*query->size);
+    int i=0;
+    initIteratorAerolista(aerolistaAsociada);
+    while(hasNextAerolista(aerolistaAsociada)){
+        query->arr[i++].aeropuerto=getNextAerolista(aerolistaAsociada);
+        query->arr[i++].movs=0;
+    }
     return query;
 }
 
 void queryFirstQuery(FirstQuery query,VueloADT vuelo){
     char *oaci=getOaciObjVuelo(vuelo);
-    char *denominacion=getDenominacionAerolista(query->aeroLista,oaci);
-    if(denominacion!=NULL){
-        int c;
-        if(query->first==NULL||(c=oaciCompare(oaci,query->first->oaci))>0){
-            Node aux=query->first;
-            query->first=malloc(sizeof(struct NodeCDT));
-            oaciCopy(query->first->oaci,oaci);
-            query->first->denominacion=denominacion;
-            query->first->next=aux;
-            query->first->movs=1;
+    int found=0,c=0;
+    for(int i=0; i<query->size&&!found;i++){
+        if((c=oaciCompare(oaci,getOaciAeropuerto(query->arr[i].aeropuerto)))==0){
+            query->arr[i].movs++;
+            found=1;
         }
-        else if(c==0){
-            query->first->movs+=1;
+        else if(c>=1){
+            found=1;
         }
-        else{
-            Node aux=query->first;
-            while(aux->next!=NULL||c<0){
-                aux=aux->next;
-                c=oaciCompare(oaci,aux->next->oaci);
-            }
-            if(c==0){
-                aux->next->movs+=1;
-            }
-            else{
-                Node aux2=aux->next;
-                aux->next=malloc(sizeof(struct NodeCDT));
-                aux->next->next=aux2;
-                oaciCopy(aux->next->oaci,oaci);
-                aux->next->denominacion=denominacion;
-                aux->next->movs=1;
+    }
+}
+
+//FUNCION AUXILIAR
+void swapNode(Node* node1,Node* node2){
+    Node temp=*node1;
+    *node1=*node2;
+    *node2=*node1;
+}
+//FUNCION AUXILIAR
+
+void closeFirstQuery(FirstQuery query){
+    int found;
+    for(int i=1; i<query->size; i++){
+        found=0;
+        for(int j=i; j>=0&&!found;j--){
+            if(query->arr[i].movs>query->arr[j].movs){
+                swapNode(query->arr+i,query->arr+j);
+            }else{
+                found=1;
             }
         }
     }
 }
+
 void printFirstQuery(FirstQuery query,FILE* file){
-    //TODO
+    fprintf(file,"OACI;Denominacion;Movimientos");
+    for(int i=0;i<query->size;i++){
+        fprintf(file,"%.4s;%s;%ld\n",
+                getOaciAeropuerto(query->arr[i].aeropuerto),getDenominacionAeropuerto(query->arr[i].aeropuerto),
+                query->arr[i].movs);
+    }
 }
 void freeFirstQuery(FirstQuery query){
-    if(query->first!=NULL){
-        Node aux=query->first;
-        Node aux2;
-        while(aux!=NULL){
-            aux2=aux->next;
-            free(aux);
-            aux=aux2;
-        }
-    }
+    free(query->arr);
     free(query);
 }

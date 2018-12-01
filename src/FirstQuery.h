@@ -8,6 +8,7 @@ typedef struct FirstQueryCDT* FirstQuery;
 
 FirstQuery newFirstQuery(AeroListaADT aerolistaAsociada);//crea un query con la aerolista asociada
 void queryFirstQuery(FirstQuery query,VueloADT vuelo);//procesa un vuelo
+void closeFirstQuery(FirstQuery query);//cierre el query para que este se pueda imprimir correctamente
 void printFirstQuery(FirstQuery query,FILE* file);//imprime el query al archivo
 void freeFirstQuery(FirstQuery query);//libera el query(pero no la aerolista asociada)
 

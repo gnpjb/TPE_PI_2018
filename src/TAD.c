@@ -73,13 +73,14 @@ void freeAeropuerto(AeropuertoADT aeropuerto) {
 typedef struct NodeCDT* NodeADT;
 
 struct NodeCDT {
-    char oaci[LONG_OACI] ;
-    char* denominacion;
+    AeropuertoADT aeropuerto;
     NodeADT next;
 };
 
 struct AeroListaCDT{
     NodeADT first;
+    NodeADT it;
+    int size;
 };
 
 AeroListaADT newAeroLista(){
@@ -90,31 +91,29 @@ AeroListaADT newAeroLista(){
 
 void addAeropuerto(AeroListaADT aerolista,AeropuertoADT aeropuerto){
     NodeADT aux=NULL;
-    if(aerolista->first==NULL||oaciCompare(aerolista->first->oaci,aeropuerto->oaci)==1){
+    if(aerolista->first==NULL||oaciCompare(aerolista->first->aeropuerto->oaci,aeropuerto->oaci)==1){
         aux=aerolista->first;
         aerolista->first=malloc(sizeof(struct NodeCDT));
         aerolista->first->next=aux;
-        oaciCopy(aerolista->first->oaci,aeropuerto->oaci);
-        aerolista->first->denominacion=aeropuerto->denominacion;
-        free(aeropuerto);
+        aerolista->first->aeropuerto=aeropuerto;
+        aerolista->size++;
     }
-    else if(oaciCompare(aerolista->first->oaci,aeropuerto->oaci)==0){
+    else if(oaciCompare(aerolista->first->aeropuerto->oaci,aeropuerto->oaci)==0){
         freeAeropuerto(aeropuerto);
         return;
     }
     else{
         aux=aerolista->first;
         int c=-1;
-        while(aux->next!=NULL &&  (c=oaciCompare(aux->oaci,aeropuerto->oaci))<0) {
+        while(aux->next!=NULL &&  (c=oaciCompare(aux->aeropuerto->oaci,aeropuerto->oaci))<0) {
             aux = aux->next;
         }
         if(c!=0){
             NodeADT aux2=aux->next;
             aux->next=malloc(sizeof(struct NodeCDT));
-            oaciCopy(aux->next->oaci,aeropuerto->oaci);
-            aux->next->denominacion=aeropuerto->denominacion;
+            aux->next->aeropuerto=aeropuerto;
             aux->next->next=aux2;
-            free(aeropuerto);
+            aerolista->size++;
         }else{
             freeAeropuerto(aeropuerto);
         }
@@ -125,20 +124,38 @@ char *getDenominacionAerolista(AeroListaADT aerolista, const char* oaci){
     NodeADT aux=aerolista->first;
     int c=0;
     while(aux!=NULL && c!=1){
-        c=oaciCompare(aux->oaci,oaci);
+        c=oaciCompare(aux->aeropuerto->oaci,oaci);
         if(c==0){
-            return aux->denominacion;
+            return aux->aeropuerto->denominacion;
         }
         aux=aux->next;
     }
     return NULL;
 }
+
+void initIteratorAerolista(AeroListaADT aeroLista){
+    aeroLista->it=aeroLista->first;
+}
+
+AeropuertoADT getNextAerolista(AeroListaADT aeroLista){
+    return aeroLista->it->aeropuerto;
+}
+
+int hasNextAerolista(AeroListaADT aeroLista){
+    return aeroLista->it!=NULL;
+}
+
+int getSizeAerolista(AeroListaADT aerolista){
+    return aerolista->size;
+}
+
+
 void freeAeroLista(AeroListaADT aerolista){
     NodeADT aux=aerolista->first;
     NodeADT aux2;
     while(aux!=NULL){
         aux2=aux->next;
-        free(aux->denominacion);
+        freeAeropuerto(aux->aeropuerto);
         free(aux);
         aux=aux2;
     }

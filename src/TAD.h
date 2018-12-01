@@ -30,9 +30,15 @@ void freeAeropuerto(AeropuertoADT aeropuerto);
 
 typedef struct AeroListaCDT *AeroListaADT;
 AeroListaADT newAeroLista();//crea un aerolista vacia
-//agrega un aeropuerto a la aerolista(aeropuerto es liberado y ya no es utilizable)
+//agrega un aeropuerto a la aerolista(aeropuerto es consumido y ya no es utilizable)
 void addAeropuerto(AeroListaADT aerolista,AeropuertoADT aeropuerto);
 char *getDenominacionAerolista(AeroListaADT aerolista,const char* oaci);//devuelve la denominacion o NULL
+//un simple iterador sobre la lista
+void initIteratorAerolista(AeroListaADT aeroLista);
+AeropuertoADT getNextAerolista(AeroListaADT aeroLista);
+int hasNextAerolista(AeroListaADT aeroLista);
+// devuelve el tamaño de la lista(la cantidad de aeropuertos)
+int getSizeAerolista(AeroListaADT aerolista);
 void freeAeroLista(AeroListaADT aerolista);//libera una aerolista
 
 

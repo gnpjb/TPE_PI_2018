@@ -9,7 +9,8 @@ typedef struct SecondQueryCDT* SecondQuery;
 
 SecondQuery newSecondQuery();// crea un query
 void querySecondQuery(SecondQuery query,VueloADT vuelo);// procesa un vuelo en el query
-void printSecondQuery(SecondQuery query,FILE* file);//TODO imprime el query al file
+//imprime el query a los files (query2 a file1 query3 a file2)
+void printSecondQuery(SecondQuery query,FILE* file1,FILE* file2);
 void freeSecondQuery(SecondQuery query);//libera el query
 
 
