@@ -41,6 +41,7 @@ int main(int argc,char* argv[]) {
         return 1;
     }
     //carga los vuelos y los procesa
+    skipLine(fvuelos);
     while(cargarVuelo(fvuelos,vuelo)){
         queryFirstQuery(firstQuery,vuelo);
         querySecondQuery(secondQuery,vuelo);
@@ -48,8 +49,7 @@ int main(int argc,char* argv[]) {
     //libera el vuelo auxiliar
     freeVuelo(vuelo);
 
-    //cierra el query 1
-    closeFirstQuery(firstQuery);
+
 
 
     //crea el archivo de salida del first query y lo manda a imprimir. luego cierra el archivo y libera firstquery
@@ -61,6 +61,7 @@ int main(int argc,char* argv[]) {
         freeAeroLista(aeroLista);
         return 1;
     }
+    closeFirstQuery(firstQuery);
     printFirstQuery(firstQuery,ffirstquery);
     fclose(ffirstquery);
     freeFirstQuery(firstQuery);

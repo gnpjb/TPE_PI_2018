@@ -28,11 +28,11 @@ void queryFirstQuery(FirstQuery query,VueloADT vuelo){
     char *oaci=getOaciObjVuelo(vuelo);
     int found=0,c=0;
     for(int i=0; i<query->size&&!found;i++){
-        if((c=oaciCompare(oaci,getOaciAeropuerto(query->arr[i].aeropuerto)))==0){
+        if((c=oaciCompare(getOaciAeropuerto(query->arr[i].aeropuerto),oaci))==0){
             query->arr[i].movs++;
             found=1;
         }
-        else if(c>=1){
+        else if(c==1){
             found=1;
         }
     }
@@ -47,12 +47,13 @@ void swapNode(Node* node1,Node* node2){
 //FUNCION AUXILIAR
 
 void closeFirstQuery(FirstQuery query){
-    int found;
+    int found,pos;
     for(int i=1; i<query->size; i++){
-        found=0;
-        for(int j=i; j>=0&&!found;j--){
-            if(query->arr[i].movs>query->arr[j].movs){
-                swapNode(query->arr+i,query->arr+j);
+        found=0,pos=i;
+        for(int j=i-1; j>=0&&!found;j--){
+            if(query->arr[pos].movs>query->arr[j].movs){
+                swapNode(query->arr+pos,query->arr+j);
+                pos=j;
             }else{
                 found=1;
             }
@@ -61,7 +62,7 @@ void closeFirstQuery(FirstQuery query){
 }
 
 void printFirstQuery(FirstQuery query,FILE* file){
-    fprintf(file,"OACI;Denominacion;Movimientos");
+    fprintf(file,"OACI;Denominacion;Movimientos\n");
     for(int i=0;i<query->size;i++){
         fprintf(file,"%.4s;%s;%ld\n",
                 getOaciAeropuerto(query->arr[i].aeropuerto),getDenominacionAeropuerto(query->arr[i].aeropuerto),

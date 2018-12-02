@@ -21,24 +21,23 @@ SecondQuery newSecondQuery(){
     return query;
 }
 //FUNCION AUXILIAR
-
+//algoritmo de zeller
 int getDiaDeLaSemana(FechaT fecha) {
-    int f,k,m,d,c;
+    int h,q,m,j,k;
 
-    k=fecha.dia;
+    //calculo de los coeficientes
+    q=fecha.dia;
+    m=fecha.mes<=2?fecha.mes+12:fecha.mes;
+    j=fecha.anio/100;
+    k=fecha.anio%100;
+    //calculo de h
+    h=(q*((13*(m+1))/5)+k+k/4+j/4+5*j);
+    h=h%7;
+    //tranformo h en lo que necesito(0=lunes)
+    h=h==0?h+7:h;
+    h=h-1;
 
-    m=fecha.mes;
-    m-=2;
-    m=m>0?m:m+12;
-
-    d=m>=11?( fecha.anio % 100)-1:fecha.anio%100;
-
-    c=fecha.anio/100;
-
-    f = k + ((13*m - 1)/5) + d + (d/4) + (c/4) - 2*c;//la regla de zeller
-    f=f%7;
-
-    return (f==0?7:f)-1;
+    return h;
 }
 
 //FUNCION AUXILIAR
@@ -63,15 +62,15 @@ void querySecondQuery(SecondQuery query,VueloADT vuelo){
 }
 
 void printSecondQuery(SecondQuery query,FILE* file1,FILE* file2){
-    fprintf(file1,"Dia;Cabotaje;Internacional;Total");
+    fprintf(file1,"Dia;Cabotaje;Internacional;Total\n");
     for(int i=0; i<LONG_SEMANA; i++){
         fprintf(file1,"%s;%ld;%ld;%ld\n",DIAS_DE_LA_SEMANA[i],query->cabotaje[i],query->internacional[i],
                 query->cabotaje[i]+query->internacional[i]);
     }
-    fprintf(file2,"Clasificacion de vuelo;Clase de vuelo;Movimientos");
+    fprintf(file2,"Clasificacion de vuelo;Clase de vuelo;Movimientos\n");
     for(int i=0; i<ENUM_CLASIFICACION_AMOUNT-1; i++){
         for(int j=0; j<ENUM_CLASE_AMOUNT; j++){
-            fprintf(file2,"%s;%s;%ld",CLASIFICACIONES[i],CLASES[j],query->comp_mov[i][j]);
+            fprintf(file2,"%s;%s;%ld\n",CLASIFICACIONES[i],CLASES[j],query->comp_mov[i][j]);
         }
     }
 }

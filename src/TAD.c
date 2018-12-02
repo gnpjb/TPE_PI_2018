@@ -102,12 +102,11 @@ void addAeropuerto(AeroListaADT aerolista,AeropuertoADT aeropuerto){
     }
     else if(oaciCompare(aerolista->first->aeropuerto->oaci,aeropuerto->oaci)==0){
         freeAeropuerto(aeropuerto);
-        return;
     }
     else{
         aux=aerolista->first;
         int c=-1;
-        while(aux->next!=NULL &&  (c=oaciCompare(aux->aeropuerto->oaci,aeropuerto->oaci))<0) {
+        while(aux->next!=NULL &&  (c=oaciCompare(aux->next->aeropuerto->oaci,aeropuerto->oaci))<0) {
             aux = aux->next;
         }
         if(c!=0){
