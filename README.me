@@ -1,7 +1,5 @@
 compila con
-gcc -g -pedantic -Wall -std=c99 main.c src/FirstQuery.c src/Loaders.c src/SecondQuery.c src/TAD.c -o archivo_de_salida.o
-
-El -g es para que pueda ser debuggeado y puede ser omitido
+gcc -g -pedantic -Wall -std=c99 -fsanitize=address main.c src/FirstQuery.c src/Loaders.c src/SecondQuery.c src/TAD.c -o archivo_de_salida.o
 
 Una vez se tiene el ejecutable se debe llamar al mismo con dos argumentos:
 primero el archivo de aeropuertos y segundo el de movimientos(el programa
