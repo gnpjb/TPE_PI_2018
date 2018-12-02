@@ -46,6 +46,7 @@ int main(int argc,char* argv[]) {
         queryFirstQuery(firstQuery,vuelo);
         querySecondQuery(secondQuery,vuelo);
     }
+    fclose(fvuelos);
     //libera el vuelo auxiliar
     freeVuelo(vuelo);
 
