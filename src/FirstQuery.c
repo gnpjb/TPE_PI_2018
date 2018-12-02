@@ -18,7 +18,7 @@ FirstQuery newFirstQuery(AeroListaADT aerolistaAsociada){
     int i=0;
     initIteratorAerolista(aerolistaAsociada);
     while(hasNextAerolista(aerolistaAsociada)){
-        query->arr[i++].aeropuerto=getNextAerolista(aerolistaAsociada);
+        query->arr[i].aeropuerto=getNextAerolista(aerolistaAsociada);
         query->arr[i++].movs=0;
     }
     return query;

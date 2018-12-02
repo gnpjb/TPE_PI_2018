@@ -87,6 +87,7 @@ struct AeroListaCDT{
 AeroListaADT newAeroLista(){
     AeroListaADT list=malloc(sizeof(struct AeroListaCDT));
     list->first=NULL;
+    list->size=0;
     return list;
 }
 
