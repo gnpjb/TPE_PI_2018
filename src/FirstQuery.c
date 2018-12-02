@@ -63,7 +63,7 @@ void closeFirstQuery(FirstQuery query){
 
 void printFirstQuery(FirstQuery query,FILE* file){
     fprintf(file,"OACI;Denominacion;Movimientos\n");
-    for(int i=0;i<query->size;i++){
+    for(int i=0;i<query->size&&query->arr[i].movs>0;i++){
         fprintf(file,"%.4s;%s;%ld\n",
                 getOaciAeropuerto(query->arr[i].aeropuerto),getDenominacionAeropuerto(query->arr[i].aeropuerto),
                 query->arr[i].movs);
